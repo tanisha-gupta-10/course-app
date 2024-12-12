@@ -1,9 +1,27 @@
 {
+    "$schema": "https://openapi.vercel.sh/vercel.json",
+    "version": 2,
     "builds": [
       {
-        "src": "public/index.php",
-        "use": "@vercel/php"
+        "src": "Dockerfile",
+        "use": "@vercel/docker"
       }
-    ]
+    ],
+    "installCommand": "npm install",  // You can also use yarn or pnpm if you prefer
+    "buildCommand": "npm run build", // Or "vite build" if you're using Vite
+    "outputDirectory": "public/build", // This is where your frontend assets will be compiled
+    "routes": [
+      {
+        "src": "/(.*)",
+        "dest": "/public/index.php"
+      }
+    ],
+    "functions": {
+      "api/(.*)": {
+        "runtime": "edge",
+        "memory": 128,
+        "maxDuration": 5
+      }
+    }
   }
   
